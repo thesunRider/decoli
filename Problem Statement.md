@@ -1,0 +1,6 @@
+
+### Cognitive Listening Device
+
+Receive only cognitive listening device in form factor of a ==headphone/earphone== shall monitor communications happening in a broad spectrum from ==VLF to Ka band==. It shall detect any transmission and ==figure out its modulation== on the go. It shall be able to ==decipher any encrypted communication==. Due to its Rx only nature, it shall consume ==less power== have no electromagnetic emissions. It shall also be able to listen to any verbal/nonverbal communication, filter out noise, and replay desired ==conversation in user’s language of choice==. Idea to ==decouple Rx from Tx.== This device shall help him filter out the noise and listen only to the intended.
+
+It will be a perfect eavesdropping device to listen to everything from encrypted communication transmitted using latest modulation schemes. Also have the capability to assist soldiers in war zone, or any noisy environment to listen to any communication of choice. With no transmission capability it shall never interfere with the environment and remain undetectable. It shall be light in weight and consume very less power.
