@@ -1,8 +1,11 @@
 # DEvice of COgnitive LIstening (Decoli)
 
+![Alt text](documentation/images/sdr_mn.PNG?raw=true "Title")
 ## Docs
-Problem Statement: [[Problem Statement]]
-Questionaire: [[Questionare]]
+Problem Statement: [Problem Statement](Problem_statement.md)
+
+Questionaire: [Questionare](Questionare.md)
+
 
 
 ### Requested Specifications:
