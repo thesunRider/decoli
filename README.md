@@ -51,13 +51,6 @@ We have first moved forward with creating a prototype with discreate RTL sdr and
 - [ ] Prototype a PCB
 - [ ] Implement Full Code
 
-## Acoustic Communications
-Recieved signal is demodulated by passing it through a BPF then through a Full wave rectifier followed by an LPF.
-
-Driver: https://www.edn.com/increase-piezoelectric-transducer-acoustic-output-with-a-simple-circuit/
-
-ASK Demodlator: https://www.youspice.com/spiceprojects/spice-simulation-projects/radio-circuits-spice-projects/demodulators-spice-simulation-projects/ask-demodulator/
-
 
 #### Similar Products
 - https://swling.com/blog/tag/portable-sdrs/
