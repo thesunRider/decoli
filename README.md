@@ -30,73 +30,87 @@ Efficiency : 80%
 Battery Life (FULL USE):   **Discharging Time = Battery Capacity x Battery Volt / Device Watt.**
 1Ah x 3.7V * efficiency / 1W(usage-max) = 2.9Hr  
 
-Modulation Scheme: AM Requested, FSK would be better
-Data Encoding: Audio Interpolation Requested , but digital Scheme would be better as AI approach would help in better audio quality and better data security, REMEMBER we need to send additional details too.
+## Anteena Specs
 
+Switched through SPDT Switch
+
+20khz - 20mhz -> Ferrite Rod Anteena
+10mhz - 100mhz -> ?
+100mhz - 1 Ghz-> Wire based dipole anteena
+100mhz - 1Ghz -> chip anteena
+2ghz - 10ghz -> Chip anteena
+Wifi -> Chip Anteena
+
+## Design Inspiration
+
+RTL SDR ->  Taken from Datasheets
+Linux Subsystem ->
+Wifi Module -> ESP8266
+
+Since R820T Doesnt have HF Specs we need to use a Hardware mod that directly connects the amplified signal to HF band. (mentioned in URL), We have devised a 9db common base amplifier to amplify the HF band to feed to rtlsdr
+
+We have designed seperate schematic board for 20khz - 20mhz and 1ghz - 10ghz bands
+This allows us to either create specific board or hats if required or incorporaste into the final board , away from the main control systems.
+
+0.6Ghz - 3.1 Ghz : SR4L054
+3Ghz - 10Ghz : 3100AT51A7200001E
+
+RF Amp and switcher: ADL8112
+Attentuator: TGL4203-SM
+RF Preamp: [HMC788ALP2E](https://www.digikey.in/en/products/detail/analog-devices-inc/HMC788ALP2E/5268980)
+VLF Active anteena : [An Active Ferrite Rod Antenna with Remote Tuning](38815473.pdf)
+10Ghz LP: LFCW-8700+
+48 Mhz BPF: BPF-B48+
+75 Mhz BPF: BPF-B76+
+
+## Specifications
+
+#### R820T Tuner:
+- Frequency range: 25 to 1766 MHz
+- Noise figure : 3.5 dB @ RF_IN
+- Phase noise: -98 dBc/Hz @ 10 kHz
+- Current consumption: ＜178 mA @ 3.3V power supply
+-  Max input power: +10 dBm
+- Image rejection: 65 dBc
+
+#### RTL232 DSP:
+
+- Differential input impedance of the RTL 283 chip is approximately 3,300 Ohms
+
+Oscillator : MAX2871
+Layer stackup should be 4 layer with: RF DC, GND, RF DC, GND
+Using Si5351A for XREF generation
+
+## Reference URL
+
+RTL SDR HF Hardware MOD: https://www.rtl-sdr.com/an-interesting-rtl-sdr-direct-sampling-modification/
+RTL SDR HF Hardware MOD implemented: https://www.g8jnj.net/softwaredefinedradio.htm
+Using RTL SDR over stm32 microcontroller: https://fallingnate.svbtle.com/rtl2832-usb-stm32-pt1
 Linux capable SOC: https://jaycarlson.net/embedded-linux/
+RTL SDR base design: https://www.rtl-sdr.com/forum/viewtopic.php?f=1&t=265#p824
+Generalised Block Diagram: https://aaronscher.com/wireless_com_SDR/rtl_sdr_info.html
+Ferrite rod calculator: https://coil32.net/online-calculators/ferrite-rod-calculator.html
+LPA and sa602 reference design: https://web.archive.org/web/20161031125636/http://home.scarlet.be:80/on1bes/sdr_up_converter3.0_r820t.html
+Good RF Downconverter: https://github.com/raziele/Nigun , https://www.rtl-sdr.com/nigun-open-hardware-plans-for-an-rtl-sdr-downconverter/
+1.5 to 6ghz Downconverter: https://github.com/electrosense/hardware/tree/master/electrosense-converter-firmware , https://www.rtl-sdr.com/electrosense-rtl-sdr-based-crowd-sourced-spectrum-monitoring-with-a-dc-to-6-ghz-rtl-sdr-up-downconverter/
+50mhz to 12Ghz PLL VCO: https://www.digikey.in/en/products/detail/analog-devices-inc/ADF5610BCCZ/10249599
+Devkit VCO above: https://www.analog.com/en/products/adf5610.html#product-evaluationkit
+XREF Generator using Si5351A: https://learn.adafruit.com/adafruit-si5351-clock-generator-breakout/downloads
+Wideband Anteena: https://www.digikey.com/en/products/detail/johanson-technology-inc/3100AT51A7200E/1840080 [3.1-10.3 Ghz]
+Wideband Anteena Low Freq: https://www.digikey.in/short/z9rwv9qc [0.6 - 3.1 Ghz]
+
+## Circuits Used:
+
+![[Pasted image 20230725235952.png]]
+
+![[Pasted image 20230724040329.png]]
 
 
-## Approaches Available
-1. Generating Carrier: (AM)
-	-  The asked approach is an AM based, using MC1496 we can generate the am dsb signal
-	-  We can digitally sample the the signal and multiply it using a 40khz sine wave array to yield another signal,this can be easily ssb'd
-	
-	For FM
-	- We can use a PLL to generate the requested frequency.
-	
-	For ASK
-	- By using a full wave bridge driver and turning it on and off ASK is achieved.
+![[Pasted image 20230723232849.png]]
 
-2. Amplifying the signal would be done with a push pull amplifier.
-3. Impedance Matching using a transformer and senting out the signal.
-5. Decoding can be done: (AM & ASK)
-	- MC1496 as a Profuct detector
-	
-	For FM
-	- A PLL can be used to regenerate the signal.
+### Block Diagram
 
-6. Recover back the Digital/Analog Signal,Play it back.
+![[Pasted image 20230723230714.png]]
 
-## Approach Taken
-Since we have a limited amount of time going ith ASK is the best option available.
-Encoding and Decoding are done using simple Serial Chips like CH340G a a baud rate of 3600bps.
-
-### Problems Facing
-- Digital or Analog Modulation
-- No Tranducer in hand, in hand 40khz transducer
-- In hand Transducer very low power
-- AGC is needed for low powered audio signal reception
-
-
-## TODO's
-- [ ] Create A PCB Layout
-- [ ] Create CAD Files
-- [x] Breif Test Acoustic Transmitter and Reciever in Air
-- [ ] Create Underwater Channel simulations
-
-## Acoustic Communications
-Recieved signal is demodulated by passing it through a BPF then through a Full wave rectifier followed by an LPF.
-
-Driver: https://www.edn.com/increase-piezoelectric-transducer-acoustic-output-with-a-simple-circuit/
-
-ASK Demodlator: https://www.youspice.com/spiceprojects/spice-simulation-projects/radio-circuits-spice-projects/demodulators-spice-simulation-projects/ask-demodulator/
-
-## Light Communications
-
-Light communication would be held using blue light sources/green light sources, 460nm blue lasers will establish communication with long targets or for surface uplinks.
-
-![[Pasted image 20220816051546.png|500]]
-
-![[Pasted image 20220816171746.png|300]]
-Referals: https://ocean-innovations.net/companies/deepsea/knowledgebase/understanding-basics-underwater-lighting/
-
-
-## Channel Simulations
-https://codeocean.com/capsule/2136333/tree/v2
-https://github.com/vinittech/Underwater-Broadband-Communication/blob/master/REPORT.pdf
-
-
-#### Similar Products
-- https://subsea-import.com/scubaphone-2000d
 
 > Open on Obsidian for best results
